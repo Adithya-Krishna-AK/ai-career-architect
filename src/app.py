@@ -77,7 +77,7 @@ def scrape_web_content(url):
             soup = BeautifulSoup(response.content, 'html.parser')
             # Get text and clean it up
             text = soup.get_text(separator=' ', strip=True)
-            return text[:5000] # Limit to 5000 chars to avoid token limits
+            return text[:5000] 
         else:
             return None
     except Exception as e:
@@ -86,7 +86,6 @@ def scrape_web_content(url):
 # --- SIDEBAR: PROFILE ---
 st.sidebar.title("👤 Your Profile")
 
-# New Input Logic
 target_role = st.sidebar.text_input("🎯 Target Role / Dream Job", placeholder="e.g. Data Scientist")
 interests = st.sidebar.text_input("❤️ Your Interests", placeholder="e.g. Gaming, Art, Math")
 
@@ -105,7 +104,7 @@ elif interests:
 else:
     display_msg = "⚠️ No Goal set yet."
 
-# Skills & Bio
+qualifications = st.sidebar.text_input("🎓 Qualifications")
 selected_skills = st.sidebar.text_input("🛠️ Your Skills")
 location = st.sidebar.text_input("🌍 Location", "Remote")
 experience = st.sidebar.selectbox("⏳ Experience", ["Student", "Entry Level", "Mid Level", "Senior"])
@@ -117,7 +116,7 @@ else:
     st.sidebar.warning(display_msg)
 
 # --- MAIN INTERFACE ---
-st.markdown('<div class="main-header">🚀 AI Career Architect</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-header">📝 AI Career Architect</div>', unsafe_allow_html=True)
 
 # NEW TAB ORDER
 tab_planner, tab_resume, tab_chat, tab_linkedin = st.tabs([
@@ -143,8 +142,10 @@ with tab_planner:
                 USER CONTEXT:
                 - Target Role: {target_role if target_role else "Not specified"}
                 - Interests: {interests if interests else "Not specified"}
+                - Qualifications: {qualifications if qualifications else "Not specified"}
                 - Experience: {experience}
                 - Skills: {skills_text}
+                - Location: {location if location else "Global/Remote"}
                 
                 TASK: Create and writea complete Career guide and a strategic roadmap.
                 - If "Target Role" is present, focus strictly on that.
