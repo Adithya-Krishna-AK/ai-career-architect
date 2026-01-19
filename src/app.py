@@ -171,7 +171,7 @@ with tab_planner:
                 st.session_state['planner_result'] = get_gemini_response(prompt)
 
     if st.session_state['planner_result']:
-        st.markdown(f'<div class="ai-box">{st.session_state["planner_result"]}</div>', unsafe_allow_html=True)
+        st.container(border=True).markdown(st.session_state['planner_result'])
 
 # --- TAB 2: RESUME & JOB TAILOR ---
 with tab_resume:
@@ -226,7 +226,7 @@ with tab_resume:
                     st.session_state['resume_audit'] = get_gemini_response(content_payload)
 
     if st.session_state['resume_audit']:
-        st.markdown(f'<div class="ai-box">{st.session_state["resume_audit"]}</div>', unsafe_allow_html=True)
+        st.container(border=True).markdown(st.session_state['resume_audit'])
 
 
 # --- TAB 3: AI COACH ---
@@ -264,9 +264,11 @@ with tab_linkedin:
     st.markdown("### 🔗 LinkedIn Profile Optimizer")
     st.info("💡 Note: LinkedIn blocks most bots. For best results, paste your text manually below.")
     
+    # Inputs
     li_text_fallback = st.text_area("Paste your Profile 'About' & 'Experience' text here:")
     li_url = st.text_input("(Optional) Profile URL:")
     
+    # Process Button
     if st.button("✨ Audit Profile", key="btn_li"):
         profile_data = li_text_fallback
         
@@ -278,24 +280,31 @@ with tab_linkedin:
                     st.success("✅ Scrape successful!")
                 else:
                     st.error("❌ Could not scrape LinkedIn (Auth Wall). Please paste text above!")
-                    st.stop()
+
+        if profile_data:
+            with st.spinner("🤖 Analyzing Personal Brand..."):
+                prompt = f"""
+                Act as a Personal Branding Expert.
+                Review this LinkedIn Profile data:
+                {profile_data[:4000]}
                 
-                if profile_data:
-                    prompt = f"""
-                    Act as a Personal Branding Expert.
-                    Review this LinkedIn Profile data:
-                    {profile_data[:4000]}
-                    
-                    Target Role: {final_goal}
-                    
-                    IMPORTANT: Detect language. Answer in that language.
-                    
-                    TASK:
-                    1. **Headline Score**: Rewrite it to be punchy and search-optimized.
-                    2. **About Section**: Is it a story or a list? Give specific edits.
-                    3. **Visibility Hacks**: Suggest 3 changes to appear in more recruiter searches.
-                    """
-                    st.session_state['linkedin_result'] = get_gemini_response(prompt)
-    
-    if st.session_state['linkedin_result']:
-        st.markdown(f'<div class="ai-box">{st.session_state["linkedin_result"]}</div>', unsafe_allow_html=True)
+                Target Role: {final_goal}
+                
+                IMPORTANT: Detect language. Answer in that language.
+                
+                TASK:
+                1. **Headline Score**: Rewrite it to be punchy and search-optimized.
+                2. **About Section**: Is it a story or a list? Give specific edits.
+                3. **Visibility Hacks**: Suggest 3 changes to appear in more recruiter searches.
+                """
+                # Update Session State
+                st.session_state['linkedin_result'] = get_gemini_response(prompt)
+        elif not li_url:
+            st.warning("⚠️ Please provide some text or a URL to audit.")
+
+        st.divider()
+        st.subheader("🎯 Audit Results")
+        
+        # Replaces the HTML div with a native Streamlit bordered box
+        with st.container(border=True):
+            st.markdown(st.session_state['linkedin_result'])
