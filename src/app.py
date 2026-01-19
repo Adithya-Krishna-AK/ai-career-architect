@@ -30,14 +30,6 @@ if 'resume_plan' not in st.session_state: st.session_state['resume_plan'] = None
 if 'linkedin_result' not in st.session_state: st.session_state['linkedin_result'] = None
 if 'chat_history' not in st.session_state: st.session_state['chat_history'] = []
 
-# --- CUSTOM CSS ---
-st.markdown("""
-    <style>
-    .main-header { font-size: 2.5rem; color: #4B4BFF; font-weight: bold; text-align: center; margin-bottom: 20px; }
-    .ai-box { background-color: #1a1c24; padding: 25px; border-radius: 10px; border: 1px solid #4B4BFF; margin-bottom: 20px; }
-    .stButton>button { width: 100%; border-radius: 8px; height: 50px; font-weight: bold; font-size: 18px; }
-    </style>
-""", unsafe_allow_html=True)
 
 # --- HELPER FUNCTIONS ---
 def get_gemini_response(input_content):
@@ -116,7 +108,7 @@ else:
     st.sidebar.warning(display_msg)
 
 # --- MAIN INTERFACE ---
-st.markdown('<div class="main-header">📝 AI Career Architect</div>', unsafe_allow_html=True)
+st.title("📝 AI Career Architect")
 
 # NEW TAB ORDER
 tab_planner, tab_resume, tab_chat, tab_linkedin = st.tabs([
@@ -129,7 +121,7 @@ tab_planner, tab_resume, tab_chat, tab_linkedin = st.tabs([
 # --- TAB 1: AI PLANNER (Context Aware) ---
 with tab_planner:
     st.markdown(f"### 📅 Custom Roadmap")
-    if st.button("🚀 Generate Strategy", key="btn_manual"):
+    if st.button("🚀 Generate Strategy", key="btn_manual", use_container_width=True):
         if not final_goal:
             st.warning("⚠️ Please enter a Target Role or Interest in the sidebar.")
         else:
