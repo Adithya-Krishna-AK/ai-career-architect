@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 import time
 
 # --- PAGE CONFIGURATION ---
-st.set_page_config(page_title="AI Career Architect", page_icon="🚀", layout="wide",initial_sidebar_state="expanded")
+st.set_page_config(page_title="AI Career Architect", page_icon="📝", layout="wide",initial_sidebar_state="expanded")
 
 # --- API KEY ---
 GEMINI_API_KEY = st.secrets['GEMINI_API_KEY']
